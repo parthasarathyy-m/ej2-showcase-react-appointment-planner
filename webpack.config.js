@@ -6,7 +6,7 @@ const path = require("path");
 
 module.exports = {
   entry: {
-    index: glob.sync("./src/**/**/*.tsx")
+    index: glob.sync("./src/**/**/*.tsx").map(file => `./${file}`)
   },
   target: "web",
   module: {
@@ -32,7 +32,15 @@ module.exports = {
         use: [
           "style-loader",
           "css-loader",
-          "sass-loader",
+          {
+            loader: "sass-loader",
+            options: {
+              sassOptions: {
+                quietDeps: true,
+                silenceDeprecations: ['legacy-js-api', 'import']
+              }
+            }
+          },
         ],
       },
     ],

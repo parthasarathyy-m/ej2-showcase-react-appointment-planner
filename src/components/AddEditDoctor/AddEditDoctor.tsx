@@ -71,7 +71,7 @@ export const AddEditDoctor = forwardRef(({ refreshDoctors, calendarDropDownObj }
                     const instance: DropDownList = ((inputElement as Element) as EJ2Instance).ej2_instances[0] as DropDownList;
                     obj[columnName] = instance.value;
                     if (columnName === 'Specialization') {
-                        obj['DepartmentId'] = (instance.getDataByValue(instance.value) as Record<string, any>)['DepartmentId'];
+                        obj['DepartmentId'] = (instance.getDataByValue(instance.value as string | number | boolean) as Record<string, any>)['DepartmentId'];
                     }
                 } else if (columnName === 'Gender') {
                     obj[columnName] = inputElement.checked ? 'Male' : 'Female';
@@ -186,7 +186,7 @@ export const AddEditDoctor = forwardRef(({ refreshDoctors, calendarDropDownObj }
                 if (columnName === '' && isCustomElement) {
                     columnName = curElement.querySelector('select').name;
                     const instance: DropDownList = ((inputElement as Element) as EJ2Instance).ej2_instances[0] as DropDownList;
-                    instance.value = obj[columnName] as string;
+                    instance.value = obj[columnName] as string | number | boolean;
                     instance.dataBind();
                 } else if (columnName === 'Gender') {
                     if (obj[columnName] === 'Male') {
