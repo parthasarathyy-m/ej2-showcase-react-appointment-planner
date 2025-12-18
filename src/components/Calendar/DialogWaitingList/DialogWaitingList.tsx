@@ -128,7 +128,7 @@ export const DialogWaitingList = forwardRef(({ getCalendarData, updateEventData 
                         <ButtonComponent cssClass="e-flat e-small" onClick={onItemDelete.bind(this)}>Delete</ButtonComponent>
                     </span>
                     <span className="add-button">
-                        <ButtonComponent ejs-button cssClass="e-flat e-small" onClick={onItemAdd.bind(this)}>Add</ButtonComponent>
+                        <ButtonComponent cssClass="e-flat e-small" onClick={onItemAdd.bind(this)}>Add</ButtonComponent>
                     </span>
                 </div>
             </div >

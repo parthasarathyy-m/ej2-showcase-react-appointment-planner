@@ -179,8 +179,6 @@ const Calendar = () => {
                 };
                 args.items.push(waitingListItem);
                 args.items.splice(5, 1);
-            } else {
-                args.items.splice(3, 2);
             }
         }
     }
@@ -240,7 +238,7 @@ const Calendar = () => {
                 });
                 comboBox.current.appendTo(comboBoxElement);
                 comboBoxElement.setAttribute('name', 'Name');
-                const buttonEle: HTMLInputElement = createElement('button', { attrs: { name: 'PatientButton' } }) as HTMLInputElement;
+                const buttonEle: HTMLButtonElement = createElement('button', { attrs: { name: 'PatientButton' } }) as HTMLButtonElement;
                 buttonEle.onclick = onAddPatient.bind(this);
                 container.appendChild(buttonEle);
                 const button: Button = new Button({ iconCss: 'e-icons e-add-icon', cssClass: 'e-small e-round', isPrimary: true });
@@ -520,6 +518,12 @@ const Calendar = () => {
         activeDoctorData.current = [];
     }
 
+    const quickInfoCloseClick = (): void => {
+        if (scheduleObj.current) {
+            scheduleObj.current.closeQuickInfoPopup();
+        }
+    }
+
     const dateHeaderTemplate = useCallback((props: Record<string, any>): JSX.Element => {
         return (
             <div className="date-text">{getDateHeaderText(props.date)}</div>
@@ -533,6 +537,9 @@ const Calendar = () => {
         return (
             <div>
                 <div className="quick-info-header">
+                    <div className="quick-info-header-icon-wrapper">
+                        <ButtonComponent cssClass="e-flat e-round e-small" iconCss="e-icons e-close-icon" onClick={quickInfoCloseClick} />
+                    </div>
                     <div className="quick-info-header-content" style={getBackGroundColor(props)}>
                         <div className="quick-info-title">Appointment Details</div>
                         <div className='duration-text'>{getEventDetails(props)}</div>

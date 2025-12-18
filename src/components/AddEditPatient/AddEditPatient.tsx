@@ -47,7 +47,6 @@ export const AddEditPatient = forwardRef(({ refreshEvent, calendarComboBoxObj }:
     }
 
     const onCancelClick = (): void => {
-        resetFormFields();
         newPatientObj.current.hide();
     }
 
@@ -109,7 +108,6 @@ export const AddEditPatient = forwardRef(({ refreshEvent, calendarComboBoxObj }:
             calendarComboBoxObj.current.dataSource = [];
             calendarComboBoxObj.current.dataSource = patientsData;
         }
-        resetFormFields();
         newPatientObj.current.hide();
     }
 
@@ -125,7 +123,7 @@ export const AddEditPatient = forwardRef(({ refreshEvent, calendarComboBoxObj }:
                 if (columnName === '' && isDropElement) {
                     columnName = curElement.querySelector('select').name;
                     const instance: DropDownList = (inputElement as EJ2Instance).ej2_instances[0] as DropDownList;
-                    instance.value = (instance as any).dataSource[0];
+                    instance.value = (instance as any).dataSource[0].Value;
                 } else if (columnName === 'DOB' && isDatePickElement) {
                     const instance: DatePicker = (inputElement as EJ2Instance).ej2_instances[0] as DatePicker;
                     instance.value = new Date();
@@ -194,6 +192,10 @@ export const AddEditPatient = forwardRef(({ refreshEvent, calendarComboBoxObj }:
         renderFormValidator(formElement, rules, newPatientObj.current.element);
     }
 
+    const onBeforeClose = (): void => {
+        resetFormFields();
+    }
+
     const footerTemplate = (props: Record<string, any>): JSX.Element => {
         return (
             <div className="button-container">
@@ -207,7 +209,7 @@ export const AddEditPatient = forwardRef(({ refreshEvent, calendarComboBoxObj }:
         <div className="new-patient-container" style={{ display: 'none' }}>
             <DialogComponent ref={newPatientObj} width='390px' cssClass='new-patient-dialog' isModal={true} visible={false}
                 animationSettings={animationSettings} header={title} showCloseIcon={true} target='#content-area'
-                beforeOpen={onBeforeOpen.bind(this)} footerTemplate={footerTemplate.bind(this)}>
+                beforeOpen={onBeforeOpen.bind(this)} footerTemplate={footerTemplate.bind(this)} beforeClose={onBeforeClose.bind(this)}>
                 <form id='new-patient-form'>
                     <div className="field-container name-container">
                         <TextBoxComponent id='Name' name='Name' cssClass='patient-name e-field' placeholder='Patient Name' floatLabelType='Always'></TextBoxComponent>

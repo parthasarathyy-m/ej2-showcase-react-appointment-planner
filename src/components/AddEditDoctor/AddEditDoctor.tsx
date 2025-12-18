@@ -49,7 +49,6 @@ export const AddEditDoctor = forwardRef(({ refreshDoctors, calendarDropDownObj }
     }
 
     const onCancelClick = (): void => {
-        resetFormFields();
         newDoctorObj.current.hide();
     }
 
@@ -70,8 +69,9 @@ export const AddEditDoctor = forwardRef(({ refreshDoctors, calendarDropDownObj }
                     columnName = curElement.querySelector('select').name;
                     const instance: DropDownList = ((inputElement as Element) as EJ2Instance).ej2_instances[0] as DropDownList;
                     obj[columnName] = instance.value;
+                    let value: string = instance.value as string;
                     if (columnName === 'Specialization') {
-                        obj['DepartmentId'] = (instance.getDataByValue(instance.value as string | number | boolean) as Record<string, any>)['DepartmentId'];
+                        obj['DepartmentId'] = (instance.getDataByValue(value) as Record<string, any>)['DepartmentId'];
                     }
                 } else if (columnName === 'Gender') {
                     obj[columnName] = inputElement.checked ? 'Male' : 'Female';
@@ -111,7 +111,6 @@ export const AddEditDoctor = forwardRef(({ refreshDoctors, calendarDropDownObj }
             calendarDropDownObj.current.dataSource = [];
             calendarDropDownObj.current.dataSource = doctorsData;
         }
-        resetFormFields();
         newDoctorObj.current.hide();
     }
 
@@ -159,7 +158,7 @@ export const AddEditDoctor = forwardRef(({ refreshDoctors, calendarDropDownObj }
                 if (columnName === '' && isCustomElement) {
                     columnName = curElement.querySelector('select').name;
                     const instance: DropDownList = ((inputElement as Element) as EJ2Instance).ej2_instances[0] as DropDownList;
-                    instance.value = (instance as any).dataSource[0];
+                    instance.value = (instance as any).dataSource[0].Id;
                 } else if (columnName === 'Gender') {
                     inputElement.checked = true;
                 } else if (columnName === 'Mobile') {
@@ -186,7 +185,7 @@ export const AddEditDoctor = forwardRef(({ refreshDoctors, calendarDropDownObj }
                 if (columnName === '' && isCustomElement) {
                     columnName = curElement.querySelector('select').name;
                     const instance: DropDownList = ((inputElement as Element) as EJ2Instance).ej2_instances[0] as DropDownList;
-                    instance.value = obj[columnName] as string | number | boolean;
+                    instance.value = obj[columnName] as string;
                     instance.dataBind();
                 } else if (columnName === 'Gender') {
                     if (obj[columnName] === 'Male') {
@@ -221,6 +220,10 @@ export const AddEditDoctor = forwardRef(({ refreshDoctors, calendarDropDownObj }
         renderFormValidator(formElement, rules, newDoctorObj.current.element);
     }
 
+    const onBeforeClose = (): void => {
+        resetFormFields();
+    }
+
     const footerTemplate = (props: Record<string, any>): JSX.Element => {
         return (
             <div className="button-container">
@@ -234,7 +237,7 @@ export const AddEditDoctor = forwardRef(({ refreshDoctors, calendarDropDownObj }
         <div className="new-doctor-container" style={{ display: 'none' }}>
             <DialogComponent ref={newDoctorObj} width='390px' cssClass='new-doctor-dialog' isModal={true} visible={false}
                 animationSettings={animationSettings} header={title} showCloseIcon={true} target='#content-area'
-                beforeOpen={onBeforeOpen.bind(this)} footerTemplate={footerTemplate.bind(this)}>
+                beforeOpen={onBeforeOpen.bind(this)} footerTemplate={footerTemplate.bind(this)} beforeClose={onBeforeClose.bind(this)}>
                 <form id='new-doctor-form'>
                     <div className="name-container">
                         <TextBoxComponent id='Name' name='Name' cssClass='doctor-name e-field' placeholder='Doctor Name'
